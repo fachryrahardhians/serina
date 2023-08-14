@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "917996314546",
+    "firebase_url": "https://flashchat-b5db2.firebaseio.com",
+    "project_id": "flashchat-b5db2",
+    "storage_bucket": "flashchat-b5db2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917996314546:android:8402ece9fbf5403793ceab",
+        "android_client_info": {
+          "package_name": "co.fachry.flash_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917996314546-t03o3ukmel4ooea2onuu2h52u7vjaaqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS2tvcQ7F-umS4NyFAwBcOvSL2W83Z1Es"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917996314546-t03o3ukmel4ooea2onuu2h52u7vjaaqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917996314546:android:78cbcd3a14c5f25893ceab",
+        "android_client_info": {
+          "package_name": "com.serina.serina"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917996314546-t03o3ukmel4ooea2onuu2h52u7vjaaqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS2tvcQ7F-umS4NyFAwBcOvSL2W83Z1Es"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917996314546-t03o3ukmel4ooea2onuu2h52u7vjaaqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

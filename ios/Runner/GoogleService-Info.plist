@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>651799683833-i61kcr3ks7s9r18mriggs5srsld9a0l3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.651799683833-i61kcr3ks7s9r18mriggs5srsld9a0l3</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBbEEGc6ItiDtX1kBS0O_Ltd3xx5A9KKuY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>651799683833</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.serina.serina</string>
+	<key>PROJECT_ID</key>
+	<string>selfcare-indihome</string>
+	<key>STORAGE_BUCKET</key>
+	<string>selfcare-indihome.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:651799683833:ios:0a898143e27958fafab828</string>
+	<key>DATABASE_URL</key>
+	<string>https://selfcare-indihome-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>

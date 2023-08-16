@@ -7,12 +7,16 @@ class ChatState extends Equatable {
   final List<ChatEntity>? chats;
   final String? lastTopic;
   final int? lastK;
+  final String? userId;
+  final String? sessionId;
 
   const ChatState.__({
     this.chats,
     this.messageStatus,
     this.lastK,
     this.lastTopic,
+    this.sessionId,
+    this.userId,
   });
 
   const ChatState.initial()
@@ -28,12 +32,16 @@ class ChatState extends Equatable {
     List<ChatEntity>? chats,
     String? lastTopic,
     int? lastK,
+    String? userId,
+    String? sessionId,
   }) =>
       ChatState.__(
         chats: chats ?? this.chats,
         messageStatus: messageStatus ?? this.messageStatus,
         lastK: lastK ?? this.lastK,
         lastTopic: lastTopic ?? this.lastTopic,
+        sessionId: sessionId ?? this.sessionId,
+        userId: userId ?? this.userId,
       );
 
   ChatState changeMessageStatus({required StateStatus status, String?
@@ -48,14 +56,20 @@ class ChatState extends Equatable {
     try{
       List<ChatEntity> updatedChat = List<ChatEntity>.from(chats ?? <ChatEntity>[]);
       updatedChat.add(lastChat);
-      print("STATE UPDATED");
+      // print("STATE UPDATED");
       return copyWith(
         chats: updatedChat,
       );
     }catch(e){
-      throw e;
+      rethrow;
     }
   }
+
+  ChatState setIdentifier({String? userId,String? sessionId}) => copyWith(
+    sessionId: sessionId,
+    userId: userId,
+  );
+
 
   ChatState streamedChats({required List<ChatEntity> chats}) => copyWith(
     chats: chats,
@@ -67,6 +81,8 @@ class ChatState extends Equatable {
         chats,
         lastTopic,
         lastK,
+        userId,
+    sessionId,
       ];
 
 

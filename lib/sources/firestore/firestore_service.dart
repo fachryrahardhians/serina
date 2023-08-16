@@ -32,7 +32,7 @@ class FirestoreService {
     return firestore
         .collection(FirestoreCollectionName.chats) // collection name
         .doc(userId) // user id under collection chat
-        .collection(sessionId)
+        .collection(sessionId).orderBy("time")
         .snapshots();
   }
 

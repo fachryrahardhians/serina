@@ -28,7 +28,7 @@ class ChatboxPage extends StatelessWidget {
               backgroundColor: Colors.white,
               elevation: 5,
               title: const Text(
-                "SERINA",
+                "SERINAx",
                 style: TextStyle(
                   letterSpacing: 1.2,
                   fontWeight: FontWeight.w500,
@@ -87,14 +87,14 @@ class ChatboxPage extends StatelessWidget {
                         // ),
                         children: List<Widget>.generate(
                           state.chats?.length ?? 0,
-                              (index) => Builder(builder: (context) {
+                          (index) => Builder(builder: (context) {
                             return !(state.chats?[index].isMe ?? false)
                                 ? ChatTileA(
-                              message: "${state.chats?[index].msg}",
-                            )
+                                    message: "${state.chats?[index].msg}",
+                                  )
                                 : ChatTileQ(
-                              message: "${state.chats?[index].msg}",
-                            );
+                                    message: "${state.chats?[index].msg}",
+                                  );
                           }),
                         ),
                       ),

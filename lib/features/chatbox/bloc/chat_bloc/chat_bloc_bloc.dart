@@ -34,8 +34,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<SendMessageEvent>((event, emit) => _sendMessage(event, emit));
     on<UpdateConversation>((event, emit) => _updateConversation(event, emit));
     on<StoreMessage>((event, emit) => _storeMessage(event, emit));
-    on<StreamedChats>((event,emit) => _streamedChats(event, emit));
-
+    on<StreamedChats>((event, emit) => _streamedChats(event, emit));
   }
 
   /// todo update to injection bloc
@@ -125,10 +124,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     } catch (e) {}
   }
 
-  _streamedChats(StreamedChats event,Emitter<ChatState> emit){
-    try{
+  _streamedChats(StreamedChats event, Emitter<ChatState> emit) {
+    try {
       emit(state.streamedChats(chats: event.chats));
-    }catch(e){
+    } catch (e) {
       debugPrint("ERROR STREAM MASSAGE");
     }
   }

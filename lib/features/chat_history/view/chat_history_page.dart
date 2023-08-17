@@ -28,7 +28,7 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
   }
 
   bool isDateShowing(DateTime? date1, DateTime? date2) {
-    if (date1 == null || date2 == null) return false;
+    if (date1 == null || date2 == null) return true;
 
     return Day.fromDateTime(date1).format("D MMMM YYYY") !=
         Day.fromDateTime(date2).format("D MMMM YYYY");

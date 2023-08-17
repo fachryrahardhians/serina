@@ -1,5 +1,5 @@
 final Map<String, dynamic> LocaleID = {
-  'Name': 'en',
+  'Name': 'id',
   'Months': {
     1: 'Januari',
     2: 'Februari',

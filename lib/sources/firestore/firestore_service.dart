@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:day/day.dart';
 import 'package:serina/config/constants.dart';
 import 'package:serina/sources/firestore/model/firestore_chat_model.dart';
+import 'package:serina/helper/date_formatter/date_formatter.dart';
 
 class FirestoreService {
   final FirebaseFirestore firestore;
@@ -37,6 +37,7 @@ class FirestoreService {
         .collection("sessions")
         .doc(sessionId)
         .collection("chats")
+        .orderBy("time")
         .snapshots();
   }
 
@@ -79,7 +80,7 @@ Future<List<FirestoreSessionModel>> getSessionHistory({
           sessionId: doc.id,
           topic: rawData["topic"],
           timestamp:
-              rawData["timestamp"]?.toDate() ?? Day.fromUnix(0).toDateTime());
+              (rawData["timestamp"]?.toDate() as DateTime).toStringDMMMMYYYY());
     }).toList();
   } catch (e) {
     rethrow;

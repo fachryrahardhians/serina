@@ -8,20 +8,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:serina/helper/random/random_gen_helper.dart';
 
 import 'package:serina/main.dart';
 
 import 'dart:math';
 
-String generateRandomString(int length) {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  final random = Random();
-  final result = List.generate(length, (index) => chars[random.nextInt(chars.length)]).join();
-  return result;
-}
+// String generateRandomString(int length) {
+//   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+//   final random = Random();
+//   final result = List.generate(length, (index) => chars[random.nextInt(chars.length)]).join();
+//   return result;
+// }
 
 void main() {
-  final randomString = generateRandomString(16); // Change the length as needed
+  String? randomString;
+  randomString = generateRandomString(32);
+  print('Random String: $randomString');
+  randomString = generateRandomString(32);
+  print('Random String: $randomString');
+  randomString = generateRandomString(32);
+  print('Random String: $randomString');
+  randomString = generateRandomString(32);
   print('Random String: $randomString');
 }
 

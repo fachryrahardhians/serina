@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:serina/sources/firestore/firestore_service.dart';
-import 'package:serina/features/chatbox/view/chatbox_page.dart';
-
+import 'package:serina/features/chatbox/view/chatbox_page_builder.dart';
 import 'package:serina/sources/firestore/model/firestore_chat_model.dart';
-
 import 'package:serina/common/color_palette/color_palette.dart';
-import 'package:day/day.dart';
-import 'package:serina/config/locale.dart';
 
 class ChatHistoryPage extends StatefulWidget {
   const ChatHistoryPage({super.key});
@@ -27,13 +23,6 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
     });
   }
 
-  bool isDateShowing(DateTime? date1, DateTime? date2) {
-    if (date1 == null || date2 == null) return true;
-
-    return Day.fromDateTime(date1).format("D MMMM YYYY") !=
-        Day.fromDateTime(date2).format("D MMMM YYYY");
-  }
-
   @override
   void initState() {
     super.initState();
@@ -49,7 +38,7 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
           backgroundColor: Colors.white,
           elevation: 5,
           title: const Text(
-            "Riwayat Chatr",
+            "Riwayat Chat",
             style: TextStyle(
               letterSpacing: 1.2,
               fontWeight: FontWeight.w500,
@@ -63,18 +52,16 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
           (index) => Column(
             children: [
               index == 0 ||
-                      isDateShowing(sessions?[index - 1].timestamp,
-                          sessions?[index].timestamp)
-                  ? Text(sessions?[index].timestamp != null
-                      ? Day.fromDateTime(sessions![index].timestamp!)
-                          .useLocale(LocaleID)
-                          .format("D MMMM YYYY")
-                      : "-")
+                      sessions?[index - 1].timestamp !=
+                          sessions?[index].timestamp
+                  ? Text(sessions?[index].timestamp ?? "-")
                   : const SizedBox(),
               TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ChatboxPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ChatboxPage()));
                   },
                   child: Text(sessions?[index].topic ?? "-"))
             ],

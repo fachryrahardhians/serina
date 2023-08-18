@@ -35,7 +35,7 @@ class FirestoreChatModel {
 class FirestoreSessionModel {
   final String sessionId;
   final String? topic;
-  final DateTime? timestamp;
+  final String? timestamp;
 
   FirestoreSessionModel({required this.sessionId, this.topic, this.timestamp});
 }

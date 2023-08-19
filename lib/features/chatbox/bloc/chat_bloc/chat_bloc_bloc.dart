@@ -26,12 +26,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           const ChatState.initial(),
         ) {
     ///streaming chat from firebase firestore
-    on<InitiateConversation>((event,emit) => _initiateConversation(event,emit));
+    on<InitiateConversation>(
+        (event, emit) => _initiateConversation(event, emit));
     on<SendMessageEvent>((event, emit) => _sendMessage(event, emit));
     on<StoreMessage>((event, emit) => _storeMessage(event, emit));
-    on<StreamedChats>((event,emit) => _streamedChats(event, emit));
-    on<ChangeSession>((event,emit) => _changeSession(event,emit));
-
+    on<StreamedChats>((event, emit) => _streamedChats(event, emit));
+    on<ChangeSession>((event, emit) => _changeSession(event, emit));
   }
 
   /// todo update to injection bloc
@@ -39,16 +39,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final LocalStorageService _localStorage = LocalStorageService();
   StreamSubscription<List<ChatEntity>>? _chatSubscription;
 
-
-  _changeSession(ChangeSession event,Emitter<ChatState> emit) async {
-    try{
+  _changeSession(ChangeSession event, Emitter<ChatState> emit) async {
+    try {
       /// generate session id baru
       final sessionId = generateRandomString(selfGeneratedSessionIdLength);
+
       /// emit state session id yg baru
       emit(state.setIdentifier(sessionId: sessionId));
+
       /// set ganti subscribtion ke session id baru
       _setSubscribtion();
       await Future.delayed(Duration(seconds: 2));
+
       /// generate pesan pertama
       add(
         StoreMessage(
@@ -62,27 +64,27 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ),
         ),
       );
-
-    }catch(e){
+    } catch (e) {
       rethrow;
     }
   }
 
-  _initiateConversation(InitiateConversation event,Emitter<ChatState> emit)
-  async {
-    try{
+  _initiateConversation(
+      InitiateConversation event, Emitter<ChatState> emit) async {
+    try {
       /// generate user id
       /// todo sementara generate user id
-      final userId = await  IdentifierHelper.getIdentifier();
+      final userId = await IdentifierHelper.getIdentifier();
+
       /// generate session id
       final sessionId = generateRandomString(selfGeneratedSessionIdLength);
 
       /// simpan userId & session id di sharedPreferences
-       await _localStorage.put(PrefName.userId, userId);
-       await _localStorage.put(PrefName.sessionId, sessionId);
+      await _localStorage.put(PrefName.userId, userId);
+      await _localStorage.put(PrefName.sessionId, sessionId);
 
-       /// simpan user id di state
-      emit(state.setIdentifier(userId: userId,sessionId: sessionId));
+      /// simpan user id di state
+      emit(state.setIdentifier(userId: userId, sessionId: sessionId));
 
       /// generate pesan pertama
       add(
@@ -100,18 +102,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       /// set start subscribtion
       _setSubscribtion();
-    }catch(e){
+    } catch (e) {
       debugPrint("ERROR INITIATE");
       rethrow;
     }
   }
 
-  void _setSubscribtion(){
+  void _setSubscribtion() {
     _chatSubscription = _usecase
         .streamChat(
       uid: state.userId!,
       sessionId: state.sessionId!,
-    ).listen((event) {
+    )
+        .listen((event) {
       add(StreamedChats(chats: event));
     });
   }
@@ -131,6 +134,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ),
         ),
       );
+
       /// kirim pertanyaan ke chatbot API
       final result = await ChatbotApiService().sendQuestion(
         uid: state.userId,
@@ -146,6 +150,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           lastTopic: result.topicIssue,
         ),
       );
+
       /// simpan balasan chat bot ke firestore
       add(
         StoreMessage(
@@ -176,10 +181,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  _streamedChats(StreamedChats event,Emitter<ChatState> emit){
-    try{
+  _streamedChats(StreamedChats event, Emitter<ChatState> emit) {
+    try {
       emit(state.streamedChats(chats: event.chats));
-    }catch(e){
+    } catch (e) {
       debugPrint("ERROR STREAM MASSAGE  === $e");
     }
   }

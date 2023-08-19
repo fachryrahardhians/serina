@@ -5,4 +5,9 @@ extension DateTimeFormatExtension on DateTime {
     final format = DateFormat('hh.mm a');
     return format.format(this);
   }
+
+  String toStringDMMMMYYYY() {
+    final format = DateFormat('d MMMM yyyy', "id_ID");
+    return format.format(this);
+  }
 }

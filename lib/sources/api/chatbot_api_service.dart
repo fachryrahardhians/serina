@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:serina/sources/api/model/answer_model.dart';
 
-
 class ChatbotApiService {
   Future<AnswerModel> sendQuestion({
     required String? uid,

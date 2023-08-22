@@ -11,8 +11,8 @@ import 'package:serina/helper/random/random_gen_helper.dart';
 import 'package:serina/helper/shared_pref_service/shared_preferences_services.dart';
 import 'package:serina/helper/unique_identifier/unique_identifier_helper.dart';
 import 'package:serina/sources/api/chatbot_api_service.dart';
-import 'package:serina/sources/firestore/firestore_service.dart';
-import 'package:serina/sources/firestore/model/firestore_chat_model.dart';
+
+
 
 import 'chat_bloc_event.dart';
 import 'chat_bloc_state.dart';
@@ -74,14 +74,14 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     try {
       /// generate user id
       /// todo sementara generate user id
-      final userId = await IdentifierHelper.getIdentifier();
+      // final userId = await IdentifierHelper.getIdentifier();
+      final userId = await _getIdentifier();
 
       /// generate session id
-      final sessionId = generateRandomString(selfGeneratedSessionIdLength);
+      // final sessionId = generateRandomString(selfGeneratedSessionIdLength);
+      final sessionId = await _getSessionId();
 
       /// simpan userId & session id di sharedPreferences
-      await _localStorage.put(PrefName.userId, userId);
-      await _localStorage.put(PrefName.sessionId, sessionId);
 
       /// simpan user id di state
       emit(state.setIdentifier(userId: userId, sessionId: sessionId));
@@ -193,5 +193,39 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> close() async {
     _chatSubscription?.cancel();
     return super.close();
+  }
+
+  Future<String> _getIdentifier() async {
+    try{
+      String? id;
+       id = await _localStorage.getString(PrefName.userId);
+      if(id != null){
+        return id;
+      }else{
+        id = await IdentifierHelper.getIdentifier();
+        /// simpan data di shared preferences
+        await _localStorage.put(PrefName.userId, id);
+        return id;
+      }
+    }catch(e){
+      rethrow;
+    }
+  }
+
+  Future<String> _getSessionId() async {
+    try{
+      String? session;
+      session = await _localStorage.getString(PrefName.sessionId);
+      if(session != null){
+        return session;
+      }else{
+        session = generateRandomString(selfGeneratedSessionIdLength);
+        /// simpan data di shared preferences
+        await _localStorage.put(PrefName.sessionId, session);
+        return session;
+      }
+    }catch(e){
+      rethrow;
+    }
   }
 }

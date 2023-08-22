@@ -61,7 +61,7 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ChatboxPage()));
+                            builder: (context) =>  ChatboxPage()));
                   },
                   child: Text(sessions?[index].topic ?? "-"))
             ],

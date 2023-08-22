@@ -79,8 +79,7 @@ Future<List<FirestoreSessionModel>> getSessionHistory({
       return FirestoreSessionModel(
           sessionId: doc.id,
           topic: rawData["topic"],
-          timestamp:
-              (rawData["timestamp"]?.toDate() as DateTime).toStringDMMMMYYYY());
+          timestamp: (rawData["timestamp"]?.toDate() as DateTime).toStringDMMMMYYYY());
     }).toList();
   } catch (e) {
     rethrow;

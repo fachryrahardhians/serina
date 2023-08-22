@@ -1,15 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serina/common/color_palette/color_palette.dart';
 import 'package:serina/features/chatbox/bloc/chat_bloc/chat_bloc_bloc.dart';
 import 'package:serina/features/chatbox/bloc/chat_bloc/chat_bloc_event.dart';
 import 'package:serina/features/chatbox/bloc/chat_bloc/chat_bloc_state.dart';
-import 'package:serina/features/chatbox/domain/entity/chat_entity.dart';
 import 'package:serina/features/chatbox/view/component/chatbox_component.dart';
 import 'package:serina/features/chatbox/view/component/end_chat_dialog.dart';
 import 'package:serina/helper/ui/font_style.dart';
-import 'package:serina/sources/firestore/firestore_service.dart';
 
 class ChatingPage extends StatefulWidget {
   const ChatingPage({Key? key}) : super(key: key);

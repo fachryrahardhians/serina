@@ -9,7 +9,9 @@ import 'package:serina/features/chatbox/view/component/end_chat_dialog.dart';
 import 'package:serina/helper/ui/font_style.dart';
 
 class ChatingPage extends StatefulWidget {
-  const ChatingPage({Key? key}) : super(key: key);
+  const ChatingPage({Key? key, this.topic}) : super(key: key);
+
+  final String? topic;
 
   @override
   State<ChatingPage> createState() => _ChatingPageState();
@@ -19,6 +21,7 @@ class _ChatingPageState extends State<ChatingPage> {
   static TextEditingController chatController = TextEditingController();
   static ScrollController scrollController = ScrollController();
   bool? _textfilled;
+  late bool isWritable;
 
   _textfieldListener() {
     setState(() {
@@ -30,6 +33,10 @@ class _ChatingPageState extends State<ChatingPage> {
   void initState() {
     super.initState();
     chatController.addListener(_textfieldListener);
+
+    setState(() {
+      isWritable = widget.topic == null;
+    });
   }
 
   @override
@@ -51,7 +58,7 @@ class _ChatingPageState extends State<ChatingPage> {
             backgroundColor: Colors.white,
             elevation: 5,
             title: Text(
-              "SERINA",
+              widget.topic ?? "SERINA",
               style: bigText.copyWith(
                 letterSpacing: 1.2,
                 fontWeight: FontWeight.bold,
@@ -65,13 +72,15 @@ class _ChatingPageState extends State<ChatingPage> {
                   onTap: () {
                     showEndChatDialog(context);
                   },
-                  child: Text(
-                    "Selesai",
-                    style: normalText.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: ColorPalette.basicRed,
-                    ),
-                  ),
+                  child: isWritable
+                      ? Text(
+                          "Selesai",
+                          style: normalText.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: ColorPalette.basicRed,
+                          ),
+                        )
+                      : SizedBox(),
                 ),
               ),
             ],
@@ -119,88 +128,95 @@ class _ChatingPageState extends State<ChatingPage> {
                         }),
                       ) +
                       [
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: Text(
-                              "Today",
-                              style: bigText.copyWith(
-                                letterSpacing: 0.6,
-                                fontWeight: FontWeight.w700,
-                                color: const Color(0xffAAACAF),
-                              ),
-                            ),
-                          ),
-                        ),
+                        isWritable
+                            ? Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 16),
+                                  child: Text(
+                                    "Today",
+                                    style: bigText.copyWith(
+                                      letterSpacing: 0.6,
+                                      fontWeight: FontWeight.w700,
+                                      color: const Color(0xffAAACAF),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
                       ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 10,
-                      offset: Offset(0, -1), // Offset for the drop shadow above
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: const BoxDecoration(
-                            color: Color(0xffF2F4F6),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
-                        child: TextField(
-                          cursorColor: Colors.grey,
-                          controller: chatController,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "ketik pesan  ...",
-                            hintStyle: TextStyle(
-                              fontSize: 11,
-                              color: Color(0xffB1B5BA),
+              isWritable
+                  ? Container(
+                      margin: const EdgeInsets.only(),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: Offset(
+                                0, -1), // Offset for the drop shadow above
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: const BoxDecoration(
+                                  color: Color(0xffF2F4F6),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12))),
+                              child: TextField(
+                                cursorColor: Colors.grey,
+                                controller: chatController,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "ketik pesan  ...",
+                                  hintStyle: TextStyle(
+                                    fontSize: 11,
+                                    color: Color(0xffB1B5BA),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          InkWell(
+                            onTap: (_textfilled ?? false)
+                                ? () {
+                                    context.read<ChatBloc>().add(
+                                        SendMessageEvent(
+                                            payload: chatController.text));
+                                    chatController.clear();
+                                  }
+                                : () {},
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: (_textfilled ?? false)
+                                    ? ColorPalette.basicRed
+                                    : Color(0xffF2F4F6),
+                              ),
+                              child: const Icon(
+                                Icons.send,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    InkWell(
-                      onTap: (_textfilled ?? false)
-                          ? () {
-                              context.read<ChatBloc>().add(SendMessageEvent(
-                                  payload: chatController.text));
-                              chatController.clear();
-                            }
-                          : () {},
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: (_textfilled ?? false)
-                              ? ColorPalette.basicRed
-                              : Color(0xffF2F4F6),
-                        ),
-                        child: const Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                    )
+                  : SizedBox(),
             ],
           ),
         );

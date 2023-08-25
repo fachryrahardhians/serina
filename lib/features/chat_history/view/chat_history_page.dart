@@ -75,9 +75,10 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ChatboxPage(
-                                          userId: userId,
-                                          sessionId: sessions?[index].sessionId,
-                                        ))).then((value) => getData());
+                                        userId: userId,
+                                        sessionId: sessions?[index].sessionId,
+                                        topic: sessions?[index].topic))).then(
+                                (value) => getData());
                             ;
                           },
                           child: Text(

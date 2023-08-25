@@ -27,6 +27,24 @@ class FirestoreService {
     }
   }
 
+  Future<void> storeSession({
+    required String userId,
+    required sessionId,
+    // required Map<String, dynamic> chat,
+    required String topic,
+  }) async {
+    try {
+      await firestore
+          .collection(FirestoreCollectionName.chats) // collection name
+          .doc(userId) // user id under collection chat
+          .collection("sessions")
+          .doc(sessionId) // session
+          .set({"topic": topic, "timestamp": DateTime.now()}); // chat data
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> streamChat({
     required String userId,
     required sessionId,
@@ -79,7 +97,8 @@ Future<List<FirestoreSessionModel>> getSessionHistory({
       return FirestoreSessionModel(
           sessionId: doc.id,
           topic: rawData["topic"],
-          timestamp: (rawData["timestamp"]?.toDate() as DateTime).toStringDMMMMYYYY());
+          timestamp:
+              (rawData["timestamp"]?.toDate() as DateTime).toStringDMMMMYYYY());
     }).toList();
   } catch (e) {
     rethrow;

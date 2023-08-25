@@ -13,10 +13,10 @@ class ChatHistoryPage extends StatefulWidget {
 
 class _ChatHistoryPageState extends State<ChatHistoryPage> {
   List<FirestoreSessionModel>? sessions;
+  String userId = "4DpgLiu03lzN6WQjy";
 
   Future<void> getData() async {
-    List<FirestoreSessionModel> data =
-        await getSessionHistory(userId: "dummyUserId");
+    List<FirestoreSessionModel> data = await getSessionHistory(userId: userId);
 
     setState(() {
       sessions = data;
@@ -26,7 +26,6 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
   @override
   void initState() {
     super.initState();
-
     getData();
   }
 
@@ -47,25 +46,45 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
           ),
         ),
         body: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
             children: List<Widget>.generate(
-          sessions?.length ?? 0,
-          (index) => Column(
-            children: [
-              index == 0 ||
-                      sessions?[index - 1].timestamp !=
-                          sessions?[index].timestamp
-                  ? Text(sessions?[index].timestamp ?? "-")
-                  : const SizedBox(),
-              TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  ChatboxPage()));
-                  },
-                  child: Text(sessions?[index].topic ?? "-"))
-            ],
-          ),
-        )));
+              sessions?.length ?? 0,
+              (index) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  index == 0 ||
+                          sessions?[index - 1].timestamp !=
+                              sessions?[index].timestamp
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 24, bottom: 10),
+                          child: Text(sessions?[index].timestamp ?? "-",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)))
+                      : const SizedBox(),
+                  (Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              alignment: Alignment.centerLeft,
+                              minimumSize: Size.fromHeight(50),
+                              padding: EdgeInsets.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              foregroundColor: Colors.black87),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatboxPage(
+                                          userId: userId,
+                                          sessionId: sessions?[index].sessionId,
+                                        ))).then((value) => getData());
+                            ;
+                          },
+                          child: Text(
+                            sessions?[index].topic ?? "-",
+                          ))))
+                ],
+              ),
+            )));
   }
 }

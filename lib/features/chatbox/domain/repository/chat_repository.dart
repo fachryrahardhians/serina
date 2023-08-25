@@ -103,4 +103,18 @@ class ChatRepository implements ChatRepositoryAbs {
       rethrow;
     }
   }
+
+  @override
+  Future<void> storeSession({
+    required String topic,
+    required String userId,
+    required String sessionId,
+  }) async {
+    try {
+      await _firestoreService.storeSession(
+          userId: userId, sessionId: sessionId, topic: topic);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

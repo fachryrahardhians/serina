@@ -20,6 +20,12 @@ abstract class _ChatUsecaseAbs {
     required String userId,
     required String sessionId,
   });
+
+  Future<void> storeSession({
+    required String topic,
+    required String userId,
+    required String sessionId,
+  });
 }
 
 class ChatUsecase implements _ChatUsecaseAbs {
@@ -50,22 +56,35 @@ class ChatUsecase implements _ChatUsecaseAbs {
     required String sessionId,
   }) {
     try {
-      return _repository.streamChat(
-          uid: uid, sessionId: sessionId);
+      return _repository.streamChat(uid: uid, sessionId: sessionId);
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<void> storeChat({required ChatEntity chats, required String userId,
-    required String sessionId}) async {
-    try{
-      await _repository.storeChat(chats: chats, userId: userId, sessionId: sessionId);
-    }catch(e){
+  Future<void> storeChat(
+      {required ChatEntity chats,
+      required String userId,
+      required String sessionId}) async {
+    try {
+      await _repository.storeChat(
+          chats: chats, userId: userId, sessionId: sessionId);
+    } catch (e) {
       rethrow;
     }
   }
 
-
+  @override
+  Future<void> storeSession(
+      {required String topic,
+      required String userId,
+      required String sessionId}) async {
+    try {
+      await _repository.storeSession(
+          topic: topic, userId: userId, sessionId: sessionId);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

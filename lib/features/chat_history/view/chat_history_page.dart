@@ -16,6 +16,10 @@ class _ChatHistoryPageState extends State<ChatHistoryPage> {
   String userId = "4DpgLiu03lzN6WQjy";
 
   Future<void> getData() async {
+    setState(() {
+      sessions = null;
+    });
+
     List<FirestoreSessionModel> data = await getSessionHistory(userId: userId);
 
     setState(() {

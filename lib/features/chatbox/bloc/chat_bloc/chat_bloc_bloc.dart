@@ -12,8 +12,6 @@ import 'package:serina/helper/shared_pref_service/shared_preferences_services.da
 import 'package:serina/helper/unique_identifier/unique_identifier_helper.dart';
 import 'package:serina/sources/api/chatbot_api_service.dart';
 
-
-
 import 'chat_bloc_event.dart';
 import 'chat_bloc_state.dart';
 
@@ -30,6 +28,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         (event, emit) => _initiateConversation(event, emit));
     on<SendMessageEvent>((event, emit) => _sendMessage(event, emit));
     on<StoreMessage>((event, emit) => _storeMessage(event, emit));
+    on<StoreSession>((event, emit) => _storeSession(event, emit));
     on<StreamedChats>((event, emit) => _streamedChats(event, emit));
     on<ChangeSession>((event, emit) => _changeSession(event, emit));
   }
@@ -75,11 +74,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       /// generate user id
       /// todo sementara generate user id
       // final userId = await IdentifierHelper.getIdentifier();
-      final userId = await _getIdentifier();
+      final userId = event.userId ?? await _getIdentifier();
 
       /// generate session id
       // final sessionId = generateRandomString(selfGeneratedSessionIdLength);
-      final sessionId = await _getSessionId();
+      final sessionId = event.sessionId ?? await _getSessionId();
 
       /// simpan userId & session id di sharedPreferences
 
@@ -87,18 +86,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(state.setIdentifier(userId: userId, sessionId: sessionId));
 
       /// generate pesan pertama
-      add(
-        StoreMessage(
-          // userId: state.userId!,
-          // sessionId: state.sessionId!,
-          chat: ChatEntity(
-            msg: cWelcomeMessage,
-            isMe: false,
-            topic: "-",
-            time: DateTime.now(),
+      if (event.sessionId == null) {
+        add(
+          StoreMessage(
+            // userId: state.userId!,
+            // sessionId: state.sessionId!,
+            chat: ChatEntity(
+              msg: cWelcomeMessage,
+              isMe: false,
+              topic: "-",
+              time: DateTime.now(),
+            ),
           ),
-        ),
-      );
+        );
+      }
 
       /// set start subscribtion
       _setSubscribtion();
@@ -164,6 +165,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           ),
         ),
       );
+
+      add(
+        StoreSession(
+          topic: result.topicIssue,
+        ),
+      );
     } catch (e) {
       emit(state.changeMessageStatus(status: StateStatus.error));
     }
@@ -173,6 +180,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     try {
       _usecase.storeChat(
         chats: event.chat,
+        userId: state.userId!,
+        sessionId: state.sessionId!,
+      );
+    } catch (e) {
+      debugPrint("SOMETHING WRONG WHEN SAVE MESSAGE $e");
+    }
+  }
+
+  _storeSession(StoreSession event, Emitter<ChatState> emit) {
+    try {
+      _usecase.storeSession(
+        topic: event.topic ?? "-",
         userId: state.userId!,
         sessionId: state.sessionId!,
       );
@@ -196,35 +215,37 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<String> _getIdentifier() async {
-    try{
+    try {
       String? id;
-       id = await _localStorage.getString(PrefName.userId);
-      if(id != null){
+      id = await _localStorage.getString(PrefName.userId);
+      if (id != null) {
         return id;
-      }else{
+      } else {
         id = await IdentifierHelper.getIdentifier();
+
         /// simpan data di shared preferences
         await _localStorage.put(PrefName.userId, id);
         return id;
       }
-    }catch(e){
+    } catch (e) {
       rethrow;
     }
   }
 
   Future<String> _getSessionId() async {
-    try{
+    try {
       String? session;
       session = await _localStorage.getString(PrefName.sessionId);
-      if(session != null){
+      if (session != null) {
         return session;
-      }else{
+      } else {
         session = generateRandomString(selfGeneratedSessionIdLength);
+
         /// simpan data di shared preferences
         await _localStorage.put(PrefName.sessionId, session);
         return session;
       }
-    }catch(e){
+    } catch (e) {
       rethrow;
     }
   }

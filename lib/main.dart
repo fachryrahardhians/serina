@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:serina/features/chat_history/view/chat_history_page.dart';
 import 'package:serina/features/chatbox/view/chatbox_page_builder.dart';
-import 'package:serina/features/chatbox/view/component/chatting_page.dart';
 import 'package:serina/firebase_options.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       // home: const ChatHistoryPage(),
-      home:  ChatboxPage(),
+      home: ChatboxPage(),
     );
   }
 }

@@ -5,6 +5,8 @@ import 'package:serina/features/chatbox/bloc/chat_bloc/chat_bloc_bloc.dart';
 import 'package:serina/features/chatbox/bloc/chat_bloc/chat_bloc_event.dart';
 import 'package:serina/helper/ui/font_style.dart';
 
+import 'package:serina/features/chat_history/view/chat_history_page.dart';
+
 showEndChatDialog(BuildContext context) {
   showDialog(
     context: context,
@@ -98,6 +100,11 @@ class EndChatDialog extends StatelessWidget {
                   onTap: () {
                     Navigator.pop(context);
                     context.read<ChatBloc>().add(ChangeSession());
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ChatHistoryPage()));
                   },
                   child: Container(
                     padding: EdgeInsets.all(8),

@@ -4,10 +4,14 @@ import 'package:serina/features/chatbox/domain/entity/question_payload_entity.da
 
 abstract class ChatEvent extends Equatable {}
 
-
 class InitiateConversation extends ChatEvent {
+  final String? userId;
+  final String? sessionId;
+
+  InitiateConversation({this.userId, this.sessionId});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [userId, sessionId];
 }
 
 class ChangeSession extends ChatEvent {
@@ -52,7 +56,7 @@ class StoreMessage extends ChatEvent {
   // final String sessionId;
   final ChatEntity chat;
 
-    StoreMessage({
+  StoreMessage({
     // required this.userId,
     // required this.sessionId,
     required this.chat,
@@ -60,16 +64,26 @@ class StoreMessage extends ChatEvent {
 
   @override
   List<Object?> get props => [
-    // userId,
-    // sessionId,
-    chat,
-  ];
+        // userId,
+        // sessionId,
+        chat,
+      ];
+}
+
+class StoreSession extends ChatEvent {
+  final String? topic;
+
+  StoreSession({
+    this.topic,
+  });
+
+  @override
+  List<Object?> get props => [
+        topic,
+      ];
 }
 
 class StreamMessage extends ChatEvent {
   @override
-  List<Object?> get props => [
-
-  ];
-
+  List<Object?> get props => [];
 }

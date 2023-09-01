@@ -16,7 +16,8 @@ class ChatboxPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ChatBloc()
-        ..add(InitiateConversation(userId: userId, sessionId: sessionId)),
+        ..add(InitiateConversation(
+            userId: "4DpgLiu03lzN6WQjy", sessionId: sessionId)),
       child: ChatingPage(topic: topic),
     );
   }

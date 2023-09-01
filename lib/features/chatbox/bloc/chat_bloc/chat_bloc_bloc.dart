@@ -99,8 +99,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             ),
           ),
         );
-
-        add(StoreSession(topic: "-"));
       }
 
       /// set start subscribtion
